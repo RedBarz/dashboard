@@ -1,10 +1,11 @@
 import { CalendarOutlined } from "@ant-design/icons";
-import { Card, List } from "antd";
+import { Badge, Card, List } from "antd";
+import UpcomingEventsSkeleton from "components/skeleton/upcoming-events";
 import { Text } from "components/text";
 import { useState } from "react";
 
 const UpcomingEvents = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Card
@@ -28,17 +29,25 @@ const UpcomingEvents = () => {
     >
       {isLoading ? (
         <List
-        itemLayout="horizontal"
-        dataSource={Array.from({lenght: 5}).map((_,index) => ({
-          id: index,
-        }))}
-        >
-          
-        </List>
+          itemLayout="horizontal"
+          dataSource={Array.from({ length: 5 }).map((_, index) => ({
+            id: index,
+          }))}
+          renderItem={() => <UpcomingEventsSkeleton />}
+        ></List>
       ) : (
-        <List>
-          
-        </List>
+        <List
+          itemLayout="horizontal"
+          dataSource={[]}
+          renderItem={(item) => {
+            return (
+              <List.Item>
+                {" "}
+                <List.Item.Meta avatar={<Badge color={item.color} />} />
+              </List.Item>
+            );
+          }}
+        ></List>
       )}
     </Card>
   );
